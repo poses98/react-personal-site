@@ -1,0 +1,9 @@
+bcrypt-nodejs -> encriptacion
+body-parser -> pasar informacion en el body utilizando expressjs
+connect-multiparty -> middleware para subir imágenes al server
+express -> crear el sistema de rutas
+jwt-simple -> codificacion y descodificacion de tokens (+seguridad a los tokens)
+moment -> trabajar con fechas y horas
+mongoose -> peticiones, conexion... a la bd -> ODM MongoDB
+nodemon -> para que el proyecto lea los cambios realizados automaticamente
+nodemon se instala en global -> yarn add global nodemon
