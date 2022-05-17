@@ -15,4 +15,4 @@ app.use(bodyParser.json())
 // todo Configure header HTTP
 // ...
 
-module.exports = app
+module.exports = app;
