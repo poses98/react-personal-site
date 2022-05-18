@@ -6,7 +6,6 @@ export default function LayoutAdmin(props) {
   const { Header, Content, Footer } = Layout;
   return (
     <Layout>
-      <h2>Menu</h2>
       <Layout>
         <Content>{children}</Content>
         <Footer>Pablo Osés</Footer>

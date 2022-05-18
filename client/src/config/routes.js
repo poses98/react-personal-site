@@ -4,7 +4,7 @@ import LayoutBasic from '../layouts/LayoutBasic';
 import LayoutError from '../layouts/LayoutError';
 // Admin pages
 import AdminHome from '../pages/Admin';
-import AdminSignIn from '../pages/Admin/SignIn';
+import AdminSignIn from '../pages/Admin/SignIn/SignIn';
 import WebMenu from '../pages/Admin/WebMenu';
 // Client pages
 import Home from '../pages/Home';
@@ -22,7 +22,7 @@ const routesAdmin = [
   {
     path: '/admin/login',
     component: AdminSignIn,
-    layout: LayoutAdmin,
+    layout: LayoutBasic,
   },
   {
     path: '/admin/menu-web',

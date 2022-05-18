@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
-import { Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Route, useNavigate } from 'react-router-dom';
 import { Layout } from 'antd';
 import MenuTop from '../components/Admin/MenuTop';
 import MenuSider from '../components/Admin/MenuSider';
-
-import './LayaoutAdmin.scss';
+import AdminSignIn from '../pages/Admin/SignIn/SignIn';
+import './LayoutAdmin.scss';
 
 export default function LayoutAdmin(props) {
   const { children } = props;
   const [menuCollapsed, setmenuCollapsed] = useState(false);
   const { Header, Content, Footer } = Layout;
-  console.log('menuCollapsed: ' + { menuCollapsed });
+
+  const user = null;
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/admin/login');
+    }
+  }, [user]);
+
   return (
     <Layout>
       <MenuSider

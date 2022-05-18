@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import { PoweroffOutlined } from '@ant-design/icons';
-import Logo from '../../../assets/logo.png';
+import Logo from '../../../assets/img/png/logo.png';
 
 import './MenuTop.scss';
 

@@ -1,18 +1,21 @@
 //Connection to db
-const express = require('express')
-const bodyParser = require('body-parser')
+const express = require('express');
+const bodyParser = require('body-parser');
 
-const app = express()
+const app = express();
 
-const { API_VERSION } = require('./config')
+const { API_VERSION } = require('./config');
 
-// todo Load routings...
-// ...
+// Load routings
+const userRoutes = require('./routers/user');
 
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // todo Configure header HTTP
 // ...
+
+// Router basic
+app.use(`/api/${API_VERSION}`, userRoutes);
 
 module.exports = app;
