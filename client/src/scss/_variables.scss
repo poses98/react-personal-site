@@ -1,3 +1,46 @@
-$primary-text-color: #1c1c1c;
+$defaultFontSize: 16px;
 
-$main-bg-color: #fafafa;
+$primary-color: rgb(219, 35, 35);
+$primary-color-hover: rgb(212, 104, 104);
+
+$menu-color: #252527;
+
+$font-light: #fff;
+$font-grey-light: #e8e8e8;
+$font-grey: #808080;
+$font-grey-dark: #000;
+$font-dark-light: "";
+$font-dark: #000;
+
+$border-light: #fff;
+$border-grey-light: #e8e8e8;
+$border-grey: #808080;
+$border-grey-dark: #595959;
+$border-dark-light: #252527;
+$border-dark: #000;
+
+$backgroun-light: #fff;
+$backgroun-grey-light: #e8e8e8;
+$backgroun-grey: #808080;
+$backgroun-grey-dark: #595959;
+$backgroun-dark-light: #252527;
+$backgroun-dark: #000;
+$background-error: #ff00001f;
+$background-success: #84b84c1f;
+
+$success: #84b84b;
+$error: #f00;
+
+//Responsive down size
+$media-breakpoint-down-xs: 413.98px;
+$media-breakpoint-down-sm: 573.98px;
+$media-breakpoint-down-md: 767.98px;
+$media-breakpoint-down-lg: 991.98px;
+$media-breakpoint-down-xl: 1199.98px;
+
+//Responsive up size
+$media-breakpoint-up-xs: 320px;
+$media-breakpoint-up-sm: 576px;
+$media-breakpoint-up-md: 768px;
+$media-breakpoint-up-lg: 992px;
+$media-breakpoint-up-xl: 1200px;
