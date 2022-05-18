@@ -9,10 +9,10 @@ export function minLengthValidation(inputData, minLength) {
   removeClassErrorSuccess(inputData);
 
   if (value.length >= minLength) {
-    inputData.parent.classList.add('success');
+    inputData.classList.add('success');
     return true;
   } else {
-    inputData.parent.classList.add('error');
+    inputData.classList.add('error');
     return false;
   }
 }
@@ -28,13 +28,13 @@ export function emailValidation(inputData) {
   const resultValidation = emailRegex.test(value);
 
   if (resultValidation) {
-    inputData.parent.classList.add('success');
+    inputData.classList.add('success');
   } else {
-    inputData.parent.classList.add('error');
+    inputData.classList.add('error');
   }
 }
 
 function removeClassErrorSuccess(inputData) {
-  inputData.parent.classList.remove('success');
-  inputData.parent.classList.remove('error');
+  inputData.classList.remove('success');
+  inputData.classList.remove('error');
 }

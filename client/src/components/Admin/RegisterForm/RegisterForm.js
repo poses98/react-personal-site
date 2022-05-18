@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Checkbox, notification } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
-import './RegisterForm.scss';
 import {
   minLengthValidation,
   emailValidation,
 } from '../../../utils/formValidation';
+import { signUpApi } from '../../../api/user';
+
+import './RegisterForm.scss';
+
 export default function RegisterForm() {
   const [inputs, setInputs] = useState({
     email: '',
@@ -49,8 +52,7 @@ export default function RegisterForm() {
     }
   };
 
-  const register = () => {
-    console.log(formValid);
+  const register = async () => {
     const { email, password, repeatPassword, privacyPolicy } = formValid;
     const emailVal = inputs.email;
     const passwordVal = inputs.password;
@@ -66,9 +68,40 @@ export default function RegisterForm() {
           message: 'Las contraseñas deben coincidir',
         });
       } else {
-        // TODO: Conectar con la API y registrar al usuario
+        const result = await signUpApi(inputs);
+        if (!result.ok) {
+          notification['error']({
+            message: result.message,
+          });
+        } else {
+          notification['success']({
+            message: result.message,
+          });
+          resetForm();
+        }
       }
     }
+  };
+
+  const resetForm = () => {
+    const input = document.getElementsByTagName('input');
+    for (let i = 0; i < input.length; i++) {
+      input[i].classList.remove('success');
+      input[i].classList.remove('error');
+    }
+    console.log(input);
+    setInputs({
+      email: '',
+      password: '',
+      repeatPassword: '',
+      privacyPolicy: false,
+    });
+    setFormValid({
+      email: false,
+      password: false,
+      repeatPassword: false,
+      privacyPolicy: false,
+    });
   };
 
   return (
