@@ -10,13 +10,13 @@ import { signUpApi } from '../../../api/user';
 import './RegisterForm.scss';
 
 export default function RegisterForm() {
+  //State
   const [inputs, setInputs] = useState({
     email: '',
     password: '',
     repeatPassword: '',
     privacyPolicy: false,
   });
-
   const [formValid, setFormValid] = useState({
     email: false,
     password: false,
@@ -24,7 +24,8 @@ export default function RegisterForm() {
     privacyPolicy: false,
   });
 
-  const changeForm = (e) => {
+  //Functions
+  const onChangeForm = (e) => {
     if (e.target.name === 'privacyPolicy') {
       setInputs({
         ...inputs,
@@ -42,7 +43,7 @@ export default function RegisterForm() {
     const { type, name } = e.target;
 
     if (type === 'email') {
-      setFormValid({ ...formValid, [name]: emailValidation });
+      setFormValid({ ...formValid, [name]: emailValidation(e.target) });
     }
     if (type === 'password') {
       setFormValid({ ...formValid, [name]: minLengthValidation(e.target, 6) });
@@ -105,7 +106,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <Form className="register-form" onFinish={register} onChange={changeForm}>
+    <Form className="register-form" onFinish={register} onChange={onChangeForm}>
       <Form.Item>
         <Input
           prefix={<MailOutlined style={{ color: 'rgba(0,0,0,.25' }} />}
