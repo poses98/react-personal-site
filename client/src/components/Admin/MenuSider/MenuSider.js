@@ -5,7 +5,6 @@ import { MenuOutlined, HomeOutlined } from '@ant-design/icons';
 import './MenuSider.scss';
 
 export default function MenuSider(props) {
-  console.log(props);
   const { menuCollapsed, setmenuCollapsed } = props;
 
   const { Sider } = Layout;

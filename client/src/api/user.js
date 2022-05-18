@@ -1,7 +1,7 @@
 //Conexion endpoints usuario
 import { BASE_PATH, API_VERSION } from './config';
 
-export function signUpApi(data) {
+export async function signUpApi(data) {
   const url = `${BASE_PATH}/${API_VERSION}/sign-up`;
   const params = {
     method: 'POST', // or 'PUT'
@@ -23,5 +23,25 @@ export function signUpApi(data) {
         };
       }
       return { ok: false, message: response.message };
+    });
+}
+
+export async function signInApi(data) {
+  const url = `${BASE_PATH}/${API_VERSION}/sign-in`;
+  const params = {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  return fetch(url, params)
+    .then((res) => res.json())
+    .catch((err) => {
+      return { ok: false, message: err.message };
+    })
+    .then((response) => {
+      return response;
     });
 }

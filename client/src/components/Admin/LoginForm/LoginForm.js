@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { Form, Button, notification, Input } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import {
   minLengthValidation,
   emailValidation,
 } from '../../../utils/formValidation';
+import { signInApi } from '../../../api/user';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../../../utils/constants';
+
 import './LoginForm.scss';
 
 export default function LoginForm() {
@@ -17,6 +21,8 @@ export default function LoginForm() {
     email: false,
     password: false,
   });
+
+  const navigate = useNavigate();
 
   const onChangeForm = (e) => {
     setInputs({
@@ -38,8 +44,25 @@ export default function LoginForm() {
     }
   };
 
-  const login = (e) => {
-    console.log(inputs);
+  const login = async () => {
+    const result = await signInApi(inputs);
+
+    if (result.message) {
+      notification['error']({
+        message: result.message,
+      });
+    } else {
+      const { accessToken, refreshToken } = result;
+      localStorage.setItem(ACCESS_TOKEN, accessToken);
+      localStorage.setItem(REFRESH_TOKEN, refreshToken);
+
+      notification['success']({
+        message: 'Login correcto',
+      });
+      navigate('/admin', { replace: true });
+    }
+
+    console.log(result);
   };
 
   return (

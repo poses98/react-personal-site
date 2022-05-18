@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Route, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Layout } from 'antd';
 import MenuTop from '../components/Admin/MenuTop';
 import MenuSider from '../components/Admin/MenuSider';
-import AdminSignIn from '../pages/Admin/SignIn/SignIn';
+
 import './LayoutAdmin.scss';
 
 export default function LayoutAdmin(props) {
