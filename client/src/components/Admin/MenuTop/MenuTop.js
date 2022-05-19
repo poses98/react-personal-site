@@ -16,7 +16,7 @@ export default function MenuTop(props) {
         />
       </div>
       <div className="menu-top__right">
-        <Button type="link" onClick={console.log('Desconexion')}>
+        <Button type="link" onClick={() => {}}>
           <PoweroffOutlined />
         </Button>
       </div>

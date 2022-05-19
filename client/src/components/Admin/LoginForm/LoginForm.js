@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button, notification, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { getAccessTokenApi } from '../../../api/auth';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import {
   minLengthValidation,
@@ -61,9 +62,12 @@ export default function LoginForm() {
       });
       navigate('/admin', { replace: true });
     }
-
-    console.log(result);
   };
+  useEffect(() => {
+    if (getAccessTokenApi()) {
+      navigate('/admin', { replace: true });
+    }
+  }, []);
 
   return (
     <Form className="login-form" onFinish={login} onChange={onChangeForm}>

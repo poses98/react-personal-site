@@ -1,3 +1,8 @@
+/**
+ * @name Auth api endpoint connection
+ * @description This class is intended to manage actions regarding tokens in client
+ */
+
 import { API_VERSION, BASE_PATH } from './config';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../utils/constants';
 import jwtDecode from 'jwt-decode';
@@ -28,7 +33,10 @@ export function getRefreshTokenApi() {
 
   return isTokenExpired(refreshToken) ? null : refreshToken;
 }
-
+/**
+ * Get new refresh and access token and stores'em into local storage
+ * @param {*} refreshToken
+ */
 export function refreshAccessToken(refreshToken) {
   const url = `${BASE_PATH}/${API_VERSION}/refresh-access-token`;
   const bodyObj = {
@@ -60,7 +68,9 @@ export function refreshAccessToken(refreshToken) {
       }
     });
 }
-
+/**
+ * Logout the user A.K.A. removing access tokens from local storage
+ */
 export function logout() {
   localStorage.removeItem(ACCESS_TOKEN);
   localStorage.removeItem(REFRESH_TOKEN);
