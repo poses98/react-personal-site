@@ -22,8 +22,6 @@ export default function AuthProvider(props) {
     isLoading: true,
   });
 
-  console.log(user);
-
   useEffect(() => {
     checkUserLogin(setUser);
   }, []);

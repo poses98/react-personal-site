@@ -18,10 +18,9 @@ export default function LayoutAdmin(props) {
 
   useEffect(() => {
     if (!user && !isLoading) {
-      console.log('Not user and not loading');
-      navigate('/admin/login', { replace: true });
+      navigate('/admin/login');
     }
-  }, []);
+  }, [user, isLoading, navigate]);
   if (user && !isLoading) {
     return (
       <Layout>
@@ -42,5 +41,5 @@ export default function LayoutAdmin(props) {
       </Layout>
     );
   }
-  return '??';
+  return null;
 }
