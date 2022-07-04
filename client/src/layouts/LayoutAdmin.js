@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from 'antd';
 import useAuth from '../hooks/useAuth';
+import { getAccessTokenApi } from '../api/auth';
 
 import MenuTop from '../components/Admin/MenuTop';
 import MenuSider from '../components/Admin/MenuSider';
@@ -17,11 +18,19 @@ export default function LayoutAdmin(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user && !isLoading) {
+    if (!getAccessTokenApi()) {
+      console.log('Not access token found. Redirecting to login');
       navigate('/admin/login');
     }
-  }, [user, isLoading, navigate]);
-  if (user && !isLoading) {
+  }, [navigate]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      console.log(user);
+    }
+  }, [isLoading, user]);
+
+  if (getAccessTokenApi() && !isLoading) {
     return (
       <Layout>
         <MenuSider

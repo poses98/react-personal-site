@@ -67,7 +67,7 @@ export default function LoginForm() {
     if (getAccessTokenApi()) {
       navigate('/admin', { replace: true });
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <Form className="login-form" onFinish={login} onChange={onChangeForm}>

@@ -50,7 +50,7 @@ function checkUserLogin(setUser) {
       });
     } else {
       //If there is an alive refresh token then get new access token and some coffee for me and let me in please, Sir
-      refreshAccessToken();
+      refreshAccessToken(refreshToken);
     }
   } else {
     //If access token is valid
