@@ -5,6 +5,9 @@ import LayoutError from '../layouts/LayoutError';
 // Admin pages
 import AdminHome from '../pages/Admin';
 import AdminSignIn from '../pages/Admin/SignIn/SignIn';
+import AdminUsers from '../pages/Admin/Users';
+
+
 import WebMenu from '../pages/Admin/WebMenu';
 // Client pages
 import Home from '../pages/Home';
@@ -29,6 +32,11 @@ const routesAdmin = [
     component: WebMenu,
     layout: LayoutAdmin,
   },
+  {
+    path: '/admin/users',
+    component: AdminUsers,
+    layout: LayoutAdmin
+  }
 ];
 
 const routesClient = [

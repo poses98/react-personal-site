@@ -13,9 +13,9 @@
     min-height: 100vh;
     &-logo {
       padding: 60px 20px;
-      img {
-        width: 100%;
-      }
+      font-family: $logo-font-family;
+      font-size: $logo-font-size;
+      color: $font-light;
     }
 
     &-tabs {

@@ -5,7 +5,8 @@ const { API_VERSION, SERVER_IP, DB_PORT, SERVER_PORT } = require('./config');
 
 // Realizamos la conexion a la bd con mongoose
 mongoose.connect(
-  `mongodb://${SERVER_IP}:${DB_PORT}/pablooses`,
+  //`mongodb://${SERVER_IP}:${DB_PORT}/pablooses`,
+  'mongodb+srv://poses98:LaHierbaDelJardin23@cluster0.9seo5.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err, res) => {
     if (err) {
@@ -37,7 +38,10 @@ mongoose.connect(
         console.log(
           'd8\'          `8b  88           88      88      `8b  88888888888  "Y88888P"       88       \n\n'
         );
-        console.log(`http://${SERVER_IP}:${SERVER_PORT}/api/${API_VERSION}`);
+        console.log(`API Version:${API_VERSION}`);
+        console.log(`Server IP:${SERVER_IP}`);
+        console.log(`Server port:${SERVER_PORT}`);
+        console.log(`\nhttp://${SERVER_IP}:${SERVER_PORT}/api/${API_VERSION}`);
         console.log('\nWelcome back!');
       });
     }
