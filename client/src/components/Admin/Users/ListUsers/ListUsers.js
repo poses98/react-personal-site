@@ -7,13 +7,19 @@ import {
   CheckCircleOutlined,
 } from "@ant-design/icons";
 import NoAvatar from "../../../../assets/img/png/no-avatar.png";
+import Modal from "../../../Modal";
+import EditUserForm from "../EditUserForm/EditUserForm";
 
 import "./ListUsers.scss";
 
 export default function ListUsers(props) {
   const { usersActive, usersInactive } = props;
   const [viewUsersActive, setViewUsersActive] = useState(true);
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalInfo, setModalInfo] = useState({
+    title: "Mi modal",
+    children: "..",
+  });
   return (
     <div className="list-users">
       <div className="list-users__switch">
@@ -26,17 +32,39 @@ export default function ListUsers(props) {
         </span>
       </div>
       {viewUsersActive ? (
-        <UsersActive usersActive={usersActive} />
+        <UsersActive
+          usersActive={usersActive}
+          setModalVisible={setModalVisible}
+          setModalInfo={setModalInfo}
+        />
       ) : (
         <UsersInactive usersInactive={usersInactive} />
       )}
+      <Modal
+        title={modalInfo.title}
+        isVisible={modalVisible}
+        setIsVisible={() => setModalVisible(false)}
+      >
+        {modalInfo.children}
+      </Modal>
     </div>
   );
 }
 
 function UsersActive(props) {
-  const { usersActive } = props;
+  const { usersActive, setModalVisible, setModalInfo } = props;
   console.log(usersActive);
+
+  const editUser = (user) => {
+    setModalVisible(true);
+    setModalInfo({
+      title: `Editar ${user.name ? user.name : "usuario"} ${
+        user.lastName ? user.lastName : ""
+      }`,
+      children: <EditUserForm user={user} />,
+    });
+  };
+
   return (
     <List
       className="users-active"
@@ -45,10 +73,7 @@ function UsersActive(props) {
       renderItem={(user) => (
         <List.Item
           actions={[
-            <Button
-              type="primary"
-              onClick={() => console.log("Editar usuario")}
-            >
+            <Button type="primary" onClick={() => editUser(user)}>
               <EditOutlined />
             </Button>,
             <Button
