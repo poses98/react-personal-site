@@ -21,7 +21,11 @@
       font-size: x-large;
       padding-left: 15px;
       font-family: $logo-font-family;
+      &-pathname{
+        font-size: small;
+      }
     }
+
   }
 
   &__right {

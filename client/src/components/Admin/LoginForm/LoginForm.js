@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Button, notification, Input } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import { getAccessTokenApi } from '../../../api/auth';
-import { MailOutlined, LockOutlined } from '@ant-design/icons';
+import React, { useEffect, useState } from "react";
+import { Form, Button, notification, Input } from "antd";
+import { useNavigate } from "react-router-dom";
+import { getAccessTokenApi } from "../../../api/auth";
+import { MailOutlined, LockOutlined } from "@ant-design/icons";
 import {
   minLengthValidation,
   emailValidation,
-} from '../../../utils/formValidation';
-import { signInApi } from '../../../api/user';
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '../../../utils/constants';
+} from "../../../utils/formValidation";
+import { signInApi } from "../../../api/user";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../../utils/constants";
 
-import './LoginForm.scss';
+import "./LoginForm.scss";
 
 export default function LoginForm() {
   const [inputs, setInputs] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const [formValid, setFormValid] = useState({
@@ -35,10 +35,10 @@ export default function LoginForm() {
   const formValidation = (e) => {
     const { type, name } = e.target;
 
-    if (type === 'email') {
+    if (type === "email") {
       setFormValid([{ ...formValid, [name]: emailValidation(e.target) }]);
     }
-    if (type === 'password') {
+    if (type === "password") {
       setFormValid([
         { ...formValid, [name]: minLengthValidation(e.target, 6) },
       ]);
@@ -49,7 +49,7 @@ export default function LoginForm() {
     const result = await signInApi(inputs);
 
     if (result.message) {
-      notification['error']({
+      notification["error"]({
         message: result.message,
       });
     } else {
@@ -57,15 +57,15 @@ export default function LoginForm() {
       localStorage.setItem(ACCESS_TOKEN, accessToken);
       localStorage.setItem(REFRESH_TOKEN, refreshToken);
 
-      notification['success']({
-        message: 'Login correcto',
+      notification["success"]({
+        message: "Login correcto",
       });
-      navigate('/admin', { replace: true });
+      navigate("/admin", { replace: true });
     }
   };
   useEffect(() => {
     if (getAccessTokenApi()) {
-      navigate('/admin', { replace: true });
+      navigate("/admin", { replace: true });
     }
   }, [navigate]);
 
@@ -73,7 +73,7 @@ export default function LoginForm() {
     <Form className="login-form" onFinish={login} onChange={onChangeForm}>
       <Form.Item>
         <Input
-          prefix={<MailOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+          prefix={<MailOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
           type="email"
           name="email"
           placeholder="Correo electrónico"
@@ -84,7 +84,7 @@ export default function LoginForm() {
       </Form.Item>
       <Form.Item>
         <Input
-          prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+          prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
           type="password"
           name="password"
           placeholder="Contraseña"

@@ -45,3 +45,24 @@ export async function signInApi(data) {
       return response;
     });
 }
+
+
+export async function getUsersApi(data){
+  const url = `${BASE_PATH}/${API_VERSION}/users`;
+  const params = {
+    method: 'GET',
+    body: JSON.stringify(data),
+    headers : {
+      'Content-Type' : 'application/json',
+    },
+  }
+
+  return fetch(url,params)
+  .then((res) => res.json)
+  .catch((err) => {
+    return {ok:false, message: err.message};
+  })
+  .then((response) =>{
+    return response;
+  })
+}
