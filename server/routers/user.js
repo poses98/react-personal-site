@@ -10,5 +10,6 @@ api.post("/sign-in", UserController.signIn);
 
 //GET endpoints
 api.get("/users", [md_auth.ensureAuth], UserController.getUsers);
+api.get("/users-active", [md_auth.ensureAuth], UserController.getUsersActive);
 
 module.exports = api;

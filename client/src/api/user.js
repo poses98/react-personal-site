@@ -65,3 +65,23 @@ export async function getUsersApi(token) {
       return result;
     });
 }
+
+export async function getUsersActiveApi(token, status) {
+  const url = `${BASE_PATH}/${API_VERSION}/users-active?active=${status}`;
+  const params = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  };
+
+  return fetch(url, params)
+    .then((response) => response.json())
+    .catch((err) => {
+      return { ok: false, message: err.message };
+    })
+    .then((result) => {
+      return result;
+    });
+}
