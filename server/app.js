@@ -1,20 +1,18 @@
 //Connection to db
-const express = require('express');
-const bodyParser = require('body-parser');
-
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 const app = express();
 
-const { API_VERSION } = require('./config');
+const { API_VERSION } = require("./config");
 
 // Load routings
-const authRoutes = require('./routers/auth');
-const userRoutes = require('./routers/user');
+const authRoutes = require("./routers/auth");
+const userRoutes = require("./routers/user");
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-// todo Configure header HTTP
-// ...
 
 // Router basic
 app.use(`/api/${API_VERSION}`, authRoutes);
