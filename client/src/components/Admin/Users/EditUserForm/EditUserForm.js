@@ -1,6 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Avatar, Form, Input, Select, Row, Col, Button } from "antd";
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
+import {
+  updateUserApi,
+  getAvatarApi,
+  uploadAvatarApi,
+} from "../../../../api/user";
+import { getAccessTokenApi } from "../../../../api/auth";
 import { useDropzone } from "react-dropzone";
 import NoAvatar from "../../../../assets/img/png/no-avatar.png";
 import "./EditUserForm.scss";
@@ -18,6 +24,8 @@ export default function EditUserForm(props) {
     avatar: user.avatar,
   });
 
+  const accessToken = getAccessTokenApi();
+
   useEffect(() => {
     if (avatar) {
       setUserData({ ...userData, avatar });
@@ -27,6 +35,7 @@ export default function EditUserForm(props) {
 
   const updateUser = (e) => {
     console.log(userData);
+    updateUserApi(accessToken, userData, user._id);
   };
 
   return (
@@ -77,7 +86,7 @@ function EditForm(props) {
   const onChangeForm = (e) => {
     setUserData({
       ...userData,
-      [e.target.name]: e.target.value, //Con esto el resto de inputs
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -124,7 +133,7 @@ function EditForm(props) {
             <Select
               name="role"
               placeholder="Selecciona el rol de usuario"
-              defaultValue={userData.role}
+              onChange={() => setUserData({ ...userData })}
             >
               <Option value="admin">Administrador</Option>
               <Option value="editor">Editor</Option>
