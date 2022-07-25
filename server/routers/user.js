@@ -14,7 +14,8 @@ api.post("/sign-in", UserController.signIn);
 //GET endpoints
 api.get("/users", [md_auth.ensureAuth], UserController.getUsers);
 api.get("/users-active", [md_auth.ensureAuth], UserController.getUsersActive);
-api.get("/get-avatar/:avatarName", UserController.getAvatar); //Endpoint not protected as no sensible information. Just pictures that are public.
+api.get("/get-avatar/:avatarName", UserController.getAvatar);
+
 //PUT endpoints
 //For file uploading we use connect multiparty middleware
 api.put(
@@ -22,5 +23,6 @@ api.put(
   [md_auth.ensureAuth, md_upload_avatar],
   UserController.uploadAvatar
 );
+api.put("/update-user/:id", [md_auth.ensureAuth], UserController.updateUser);
 
 module.exports = api;
