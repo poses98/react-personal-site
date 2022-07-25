@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const bcrypt = require("bcrypt-nodejs");
 const jwt = require("../services/jwt/jwt");
 const User = require("../models/user");
@@ -125,9 +127,74 @@ function getUsersActive(req, res) {
     });
 }
 
+function uploadAvatar(req, res) {
+  // Getting user id...
+  const params = req.params;
+  User.findById({ _id: params.id }, (err, userData) => {
+    if (err) {
+      res.status(500).send({ message: "Error del servidor" });
+    } else {
+      if (!userData) {
+        res.status(404).send({ message: "Usuario no encontrado" });
+      } else {
+        let user = userData;
+
+        if (req.files) {
+          let filePath = req.files.avatar.path; // uploads/avatar/Ihh6alx4SAiJ046r9YSbhmbl.png
+          let fileSplit = filePath.split("/"); // [uploads,avatar,Ihh6alx4SAiJ046r9YSbhmbl.png]
+          let fileName = fileSplit[2]; // Ihh6alx4SAiJ046r9YSbhmbl.png
+          let fileExt = fileName.split(".")[1]; // png
+
+          if (!/(jpe?g|tiff?|png|webp|bmp)$/i.test(fileExt)) {
+            res.status(400).send({
+              message:
+                "Extensión de archivo no válida. (Se permiten png,jpg,tiff,png,webp y bmp)",
+            });
+          } else {
+            user.avatar = fileName;
+            User.findByIdAndUpdate(
+              { _id: params.id },
+              user,
+              (err, userResult) => {
+                if (err) {
+                  res.status(500).send({ message: "Error del servidor" });
+                } else {
+                  if (!userResult) {
+                    res.status(404).send({ message: "Usuario no encontrado" });
+                  } else {
+                    res.status(200).send({ avatarName: fileName });
+                  }
+                }
+              }
+            );
+          }
+        }
+      }
+    }
+  });
+}
+
+function getAvatar(req, res) {
+  //Get filename
+  const avatarName = req.params.avatarName;
+  const filePath = `./uploads/avatar/${avatarName}`;
+
+  fs.access(filePath, (error) => {
+    if (error) {
+      res
+        .status(404)
+        .send({ message: `Imagen no encontrada ${error.message}` });
+    } else {
+      res.sendFile(path.resolve(filePath));
+    }
+  });
+}
+
 module.exports = {
   signUp,
   signIn,
   getUsers,
   getUsersActive,
+  uploadAvatar,
+  getAvatar,
 };
