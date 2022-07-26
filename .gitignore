@@ -11,6 +11,9 @@ node_modules
 # production
 /build
 
+# uploads
+*/uploads/avatar/*
+
 # misc
 .DS_Store
 .env.local

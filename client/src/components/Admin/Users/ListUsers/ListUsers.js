@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Switch, List, Avatar, Button } from "antd";
 import {
   EditOutlined,
@@ -9,6 +9,7 @@ import {
 import NoAvatar from "../../../../assets/img/png/no-avatar.png";
 import Modal from "../../../Modal";
 import EditUserForm from "../EditUserForm/EditUserForm";
+import { getAvatarApi } from "../../../../api/user";
 
 import "./ListUsers.scss";
 
@@ -53,7 +54,6 @@ export default function ListUsers(props) {
 
 function UsersActive(props) {
   const { usersActive, setModalVisible, setModalInfo } = props;
-  console.log(usersActive);
 
   const editUser = (user) => {
     setModalVisible(true);
@@ -70,34 +70,47 @@ function UsersActive(props) {
       className="users-active"
       itemLayout="horizontal"
       dataSource={usersActive}
-      renderItem={(user) => (
-        <List.Item
-          actions={[
-            <Button type="primary" onClick={() => editUser(user)}>
-              <EditOutlined />
-            </Button>,
-            <Button
-              type="danger"
-              onClick={() => console.log("Desactivar usuario")}
-            >
-              <StopOutlined />
-            </Button>,
-            <Button type="danger" onClick={() => console.log("Borrar usuario")}>
-              <DeleteOutlined />
-            </Button>,
-          ]}
-        >
-          <List.Item.Meta
-            avatar={<Avatar src={user.avatar ? user.avatar : NoAvatar} />}
-            title={`
+      renderItem={(user) => <UserActive user={user} editUser={editUser} />}
+    />
+  );
+}
+
+function UserActive(props) {
+  const { user, editUser } = props;
+  const [avatar, setAvatar] = useState(null);
+  useEffect(() => {
+    if (user.avatar) {
+      getAvatarApi(user.avatar).then((response) => {
+        setAvatar(response);
+      });
+    } else {
+      setAvatar(null);
+    }
+  }, [user]);
+
+  return (
+    <List.Item
+      actions={[
+        <Button type="primary" onClick={() => editUser(user)}>
+          <EditOutlined />
+        </Button>,
+        <Button type="danger" onClick={() => console.log("Desactivar usuario")}>
+          <StopOutlined />
+        </Button>,
+        <Button type="danger" onClick={() => console.log("Borrar usuario")}>
+          <DeleteOutlined />
+        </Button>,
+      ]}
+    >
+      <List.Item.Meta
+        avatar={<Avatar src={avatar ? avatar : NoAvatar} />}
+        title={`
                 ${user.name ? user.name : "..."}
                 ${user.lastName ? user.lastName : "..."}
             `}
-            description={user.email}
-          />
-        </List.Item>
-      )}
-    />
+        description={user.email}
+      />
+    </List.Item>
   );
 }
 
