@@ -122,34 +122,47 @@ function UsersInactive(props) {
       className="users-active"
       itemLayout="horizontal"
       dataSource={usersInactive}
-      renderItem={(user) => (
-        <List.Item
-          actions={[
-            <Button
-              type="primary"
-              onClick={() => console.log("Activar usuario")}
-            >
-              <CheckCircleOutlined />
-            </Button>,
-            <Button
-              type="danger"
-              onClick={() => console.log("Borrar usuario")}
-              description="Borrar usuario"
-            >
-              <DeleteOutlined />
-            </Button>,
-          ]}
-        >
-          <List.Item.Meta
-            avatar={<Avatar src={user.avatar ? user.avatar : NoAvatar} />}
-            title={`
-                    ${user.name ? user.name : "..."}
-                    ${user.lastName ? user.lastName : "..."}
-                `}
-            description={user.email}
-          />
-        </List.Item>
-      )}
+      renderItem={(user) => <UserInactive user={user} />}
     />
+  );
+}
+
+function UserInactive(props) {
+  const { user } = props;
+  const [avatar, setAvatar] = useState(null);
+
+  useEffect(() => {
+    if (user.avatar) {
+      getAvatarApi(user.avatar).then((response) => {
+        setAvatar(response);
+      });
+    } else {
+      setAvatar(null);
+    }
+  }, [user]);
+  return (
+    <List.Item
+      actions={[
+        <Button type="primary" onClick={() => console.log("Activar usuario")}>
+          <CheckCircleOutlined />
+        </Button>,
+        <Button
+          type="danger"
+          onClick={() => console.log("Borrar usuario")}
+          description="Borrar usuario"
+        >
+          <DeleteOutlined />
+        </Button>,
+      ]}
+    >
+      <List.Item.Meta
+        avatar={<Avatar src={avatar ? avatar : NoAvatar} />}
+        title={`
+              ${user.name ? user.name : "..."}
+              ${user.lastName ? user.lastName : "..."}
+          `}
+        description={user.email}
+      />
+    </List.Item>
   );
 }
