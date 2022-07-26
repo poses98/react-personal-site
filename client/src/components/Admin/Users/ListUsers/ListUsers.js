@@ -61,7 +61,7 @@ function UsersActive(props) {
       title: `Editar ${user.name ? user.name : "usuario"} ${
         user.lastName ? user.lastName : ""
       }`,
-      children: <EditUserForm user={user} />,
+      children: <EditUserForm user={user} setModalVisible={setModalVisible} />,
     });
   };
 

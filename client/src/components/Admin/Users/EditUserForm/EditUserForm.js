@@ -1,5 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Avatar, Form, Input, Select, Row, Col, Button } from "antd";
+import {
+  Avatar,
+  Form,
+  Input,
+  Select,
+  Row,
+  Col,
+  Button,
+  notification,
+  Result,
+} from "antd";
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
 import {
   updateUserApi,
@@ -12,7 +22,7 @@ import NoAvatar from "../../../../assets/img/png/no-avatar.png";
 import "./EditUserForm.scss";
 
 export default function EditUserForm(props) {
-  const { user } = props;
+  const { user, setModalVisible } = props;
   const [avatar, setAvatar] = useState(null);
   const [userData, setUserData] = useState({
     name: user.name,
@@ -52,7 +62,42 @@ export default function EditUserForm(props) {
   }, [avatar]);
 
   const updateUser = (e) => {
-    updateUserApi(accessToken, userData, user._id);
+    let userUpdate = userData;
+
+    if (userUpdate.password || userUpdate.repeatPassword) {
+      if (userUpdate.password !== userUpdate.repeatPassword) {
+        notification["error"]({
+          message: "Las contraseñas tienen que ser iguales",
+        });
+        return;
+      }
+    }
+
+    if (!userUpdate.name || !userUpdate.lastName || !userUpdate.email) {
+      notification["error"]({
+        message: "El nombre, apellidos y email son obligatorios",
+      });
+    }
+
+    if (typeof userUpdate.avatar === "object") {
+      uploadAvatarApi(accessToken, userUpdate.avatar, user._id).then(
+        (response) => {
+          userUpdate.avatar = response.avatarName;
+          updateUserApi(accessToken, userUpdate, user._id).then((result) => {
+            notification["success"]({
+              message: result.message,
+            });
+          });
+        }
+      );
+    } else {
+      updateUserApi(accessToken, userUpdate, user._id).then((result) => {
+        notification["success"]({
+          message: result.message,
+        });
+      });
+    }
+    setModalVisible(false);
   };
 
   return (
