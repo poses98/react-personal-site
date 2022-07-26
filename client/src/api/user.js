@@ -115,7 +115,7 @@ export async function getAvatarApi(avatarName) {
 
   return fetch(url)
     .then((response) => {
-      return response.json();
+      return response.url;
     })
     .catch((err) => {
       return err.message;

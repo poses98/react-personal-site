@@ -11,8 +11,6 @@ import { useDropzone } from "react-dropzone";
 import NoAvatar from "../../../../assets/img/png/no-avatar.png";
 import "./EditUserForm.scss";
 
-const { Option } = Select;
-
 export default function EditUserForm(props) {
   const { user } = props;
   const [avatar, setAvatar] = useState(null);
@@ -27,14 +25,33 @@ export default function EditUserForm(props) {
   const accessToken = getAccessTokenApi();
 
   useEffect(() => {
+    setUserData({
+      name: user.name,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+      avatar: user.avatar,
+    });
+  }, [user]);
+
+  useEffect(() => {
+    if (user.avatar) {
+      getAvatarApi(user.avatar).then((response) => {
+        setAvatar(response);
+      });
+    } else {
+      setAvatar(null);
+    }
+  }, [user]);
+
+  useEffect(() => {
     if (avatar) {
-      setUserData({ ...userData, avatar });
+      setUserData({ ...userData, avatar: avatar.file });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [avatar]);
 
   const updateUser = (e) => {
-    console.log(userData);
     updateUserApi(accessToken, userData, user._id);
   };
 
@@ -52,6 +69,19 @@ export default function EditUserForm(props) {
 
 function UploadAvatar(props) {
   const { avatar, setAvatar } = props;
+  const [avatarUrl, setAvatarUrl] = useState(null);
+
+  useEffect(() => {
+    if (avatar) {
+      if (avatar.preview) {
+        setAvatarUrl(avatar.preview);
+      } else {
+        setAvatarUrl(avatar);
+      }
+    } else {
+      setAvatarUrl(null);
+    }
+  }, [avatar]);
 
   const onDrop = useCallback(
     (acceptedFiles) => {
@@ -62,8 +92,6 @@ function UploadAvatar(props) {
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: "image/jpeg, image/png",
-    noKeyboard: true,
     onDrop,
   });
   return (
@@ -72,7 +100,7 @@ function UploadAvatar(props) {
       {isDragActive ? (
         <Avatar size={150} src={NoAvatar} />
       ) : (
-        <Avatar size={150} src={avatar ? avatar.preview : NoAvatar} />
+        <Avatar size={150} src={avatarUrl ? avatarUrl : NoAvatar} />
       )}
     </div>
   );
@@ -134,6 +162,7 @@ function EditForm(props) {
               name="role"
               placeholder="Selecciona el rol de usuario"
               onChange={() => setUserData({ ...userData })}
+              value={userData.role}
             >
               <Option value="admin">Administrador</Option>
               <Option value="editor">Editor</Option>
