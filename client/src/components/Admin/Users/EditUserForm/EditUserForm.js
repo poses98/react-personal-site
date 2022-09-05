@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Avatar,
   Form,
@@ -9,20 +9,20 @@ import {
   Button,
   notification,
   Result,
-} from "antd";
-import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
+} from 'antd';
+import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import {
   updateUserApi,
   getAvatarApi,
   uploadAvatarApi,
-} from "../../../../api/user";
-import { getAccessTokenApi } from "../../../../api/auth";
-import { useDropzone } from "react-dropzone";
-import NoAvatar from "../../../../assets/img/png/no-avatar.png";
-import "./EditUserForm.scss";
+} from '../../../../api/user';
+import { getAccessTokenApi } from '../../../../api/auth';
+import { useDropzone } from 'react-dropzone';
+import NoAvatar from '../../../../assets/img/png/no-avatar.png';
+import './EditUserForm.scss';
 
 export default function EditUserForm(props) {
-  const { user, setModalVisible } = props;
+  const { user, setModalVisible, setReloadUsers } = props;
   const [avatar, setAvatar] = useState(null);
   const [userData, setUserData] = useState({
     name: user.name,
@@ -66,35 +66,39 @@ export default function EditUserForm(props) {
 
     if (userUpdate.password || userUpdate.repeatPassword) {
       if (userUpdate.password !== userUpdate.repeatPassword) {
-        notification["error"]({
-          message: "Las contraseñas tienen que ser iguales",
+        notification['error']({
+          message: 'Las contraseñas tienen que ser iguales',
         });
         return;
+      } else {
+        delete userUpdate.repeatPassword;
       }
     }
 
     if (!userUpdate.name || !userUpdate.lastName || !userUpdate.email) {
-      notification["error"]({
-        message: "El nombre, apellidos y email son obligatorios",
+      notification['error']({
+        message: 'El nombre, apellidos y email son obligatorios',
       });
     }
 
-    if (typeof userUpdate.avatar === "object") {
+    if (typeof userUpdate.avatar === 'object') {
       uploadAvatarApi(accessToken, userUpdate.avatar, user._id).then(
         (response) => {
           userUpdate.avatar = response.avatarName;
           updateUserApi(accessToken, userUpdate, user._id).then((result) => {
-            notification["success"]({
+            notification['success']({
               message: result.message,
             });
+            setReloadUsers(true);
           });
         }
       );
     } else {
       updateUserApi(accessToken, userUpdate, user._id).then((result) => {
-        notification["success"]({
+        notification['success']({
           message: result.message,
         });
+        setReloadUsers(true);
       });
     }
     setModalVisible(false);
@@ -171,7 +175,7 @@ function EditForm(props) {
             <Input
               type="text"
               name="name"
-              prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+              prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder="Nombre"
               value={userData.name}
             />
@@ -182,7 +186,7 @@ function EditForm(props) {
             <Input
               type="text"
               name="lastName"
-              prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+              prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder="Apellido"
               value={userData.lastName}
             />
@@ -195,7 +199,7 @@ function EditForm(props) {
             <Input
               type="email"
               name="email"
-              prefix={<MailOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+              prefix={<MailOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder="Email"
               value={userData.email}
             />
@@ -222,7 +226,7 @@ function EditForm(props) {
             <Input
               type="password"
               name="password"
-              prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+              prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder="Contraseña"
               value={userData.password}
             />
@@ -233,7 +237,7 @@ function EditForm(props) {
             <Input
               type="password"
               name="repeatPassword"
-              prefix={<LockOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+              prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder="Repita la contraseña"
             />
           </Form.Item>

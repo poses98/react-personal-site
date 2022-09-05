@@ -1,8 +1,8 @@
-const fs = require("fs");
-const path = require("path");
-const bcrypt = require("bcrypt-nodejs");
-const jwt = require("../services/jwt/jwt");
-const User = require("../models/user");
+const fs = require('fs');
+const path = require('path');
+const bcrypt = require('bcrypt-nodejs');
+const jwt = require('../services/jwt/jwt');
+const User = require('../models/user');
 
 /**
  * Function to signUp users
@@ -17,30 +17,30 @@ function signUp(req, res) {
   user.name = name;
   user.lastName = lastName;
   user.email = email.toLowerCase();
-  user.role = "admin";
+  user.role = 'admin';
   user.active = false;
 
   if (!password || !repeatPassword) {
-    res.status(404).send({ message: "Las contraseñas son obligatorias" });
+    res.status(404).send({ message: 'Las contraseñas son obligatorias' });
   } else {
     if (password !== repeatPassword) {
       res
         .status(404)
-        .send({ message: "Las contraseñas tienen que coincidir." });
+        .send({ message: 'Las contraseñas tienen que coincidir.' });
     } else {
       //Encriptamos la contraseña
       bcrypt.hash(password, null, null, function (err, hash) {
         if (err) {
-          res.status(500).send({ message: "Error al encriptar" });
+          res.status(500).send({ message: 'Error al encriptar' });
         } else {
           user.password = hash;
           //Se guarda el usuario en la base de datos
           user.save((err, storedUser) => {
             if (err) {
-              res.status(500).send({ message: "El usuario ya existe" });
+              res.status(500).send({ message: 'El usuario ya existe' });
             } else {
               if (!storedUser) {
-                res.status(404).send({ message: "Error al crear el usuario" });
+                res.status(404).send({ message: 'Error al crear el usuario' });
               } else {
                 res.status(200).send({ user: storedUser });
               }
@@ -64,25 +64,25 @@ function signIn(req, res) {
 
   User.findOne({ email }, (err, storedUser) => {
     if (err) {
-      res.status(500).send({ message: "Error del servidor" });
+      res.status(500).send({ message: 'Error del servidor' });
     } else {
       if (!storedUser) {
         res
           .status(404)
-          .send({ message: "El usuario o la contraseña no existen" });
+          .send({ message: 'El usuario o la contraseña no existen' });
       } else {
         bcrypt.compare(password, storedUser.password, (err, valid) => {
           if (err) {
-            res.status(500).send({ message: "Error del servidor" });
+            res.status(500).send({ message: 'Error del servidor' });
           } else if (!valid) {
             res
               .status(404)
-              .send({ message: "El usuario o la contraseña no existen" });
+              .send({ message: 'El usuario o la contraseña no existen' });
           } else {
             if (!storedUser.active) {
               res.status(200).send({
                 code: 200,
-                message: "La cuenta no está activada",
+                message: 'La cuenta no está activada',
               });
             } else {
               //Password ok & active ok -> create access token
@@ -100,12 +100,12 @@ function signIn(req, res) {
 
 function getUsers(req, res) {
   User.find()
-    .select("-password") //Excluding password field
+    .select('-password') //Excluding password field
     .then((users) => {
       if (!users) {
         res
           .status(404)
-          .send({ message: "No se ha encontrado ningún usuario." });
+          .send({ message: 'No se ha encontrado ningún usuario.' });
       } else {
         res.status(200).send({ users });
       }
@@ -115,11 +115,11 @@ function getUsers(req, res) {
 function getUsersActive(req, res) {
   const query = req.query;
   User.find({ active: query.active })
-    .select("-password")
+    .select('-password')
     .then((users) => {
       if (!users) {
         res.status(404).send({
-          message: "No se han encontrado usuarios con la cuenta activada.",
+          message: 'No se han encontrado usuarios con la cuenta activada.',
         });
       } else {
         res.status(200).send({ users });
@@ -132,23 +132,24 @@ function uploadAvatar(req, res) {
   const params = req.params;
   User.findById({ _id: params.id }, (err, userData) => {
     if (err) {
-      res.status(500).send({ message: "Error del servidor" });
+      res.status(500).send({ message: 'Error del servidor' });
     } else {
       if (!userData) {
-        res.status(404).send({ message: "Usuario no encontrado" });
+        res.status(404).send({ message: 'Usuario no encontrado' });
       } else {
         let user = userData;
 
         if (req.files) {
-          let filePath = req.files.avatar.path; // uploads/avatar/Ihh6alx4SAiJ046r9YSbhmbl.png
-          let fileSplit = filePath.split("/"); // [uploads,avatar,Ihh6alx4SAiJ046r9YSbhmbl.png]
+          console.log(req.files);
+          let filePath = req.files.avatarName.path; // uploads/avatar/Ihh6alx4SAiJ046r9YSbhmbl.png
+          let fileSplit = filePath.split('\\'); // [uploads,avatar,Ihh6alx4SAiJ046r9YSbhmbl.png] IN WINDOWS MUST BE "\\" BUT IN LINUX "//" \_O_/
           let fileName = fileSplit[2]; // Ihh6alx4SAiJ046r9YSbhmbl.png
-          let fileExt = fileName.split(".")[1]; // png
+          let fileExt = fileName.split('.')[1]; // png
 
           if (!/(jpe?g|tiff?|png|webp|bmp)$/i.test(fileExt)) {
             res.status(400).send({
               message:
-                "Extensión de archivo no válida. (Se permiten png,jpg,tiff,png,webp y bmp)",
+                'Extensión de archivo no válida. (Se permiten png,jpg,tiff,png,webp y bmp)',
             });
           } else {
             user.avatar = fileName;
@@ -157,10 +158,10 @@ function uploadAvatar(req, res) {
               user,
               (err, userResult) => {
                 if (err) {
-                  res.status(500).send({ message: "Error del servidor" });
+                  res.status(500).send({ message: 'Error del servidor' });
                 } else {
                   if (!userResult) {
-                    res.status(404).send({ message: "Usuario no encontrado" });
+                    res.status(404).send({ message: 'Usuario no encontrado' });
                   } else {
                     res.status(200).send({ avatarName: fileName });
                   }
@@ -191,18 +192,34 @@ function getAvatar(req, res) {
 }
 
 function updateUser(req, res) {
-  const userData = req.body;
+  let userData = req.body;
   const params = req.params;
-
-  User.findByIdAndUpdate({ _id: params.id }, userData, (err, userUpdate) => {
+  bcrypt.hash(userData.password, null, null, function (err, hash) {
     if (err) {
-      res.status(500).send({ message: "Error del servidor." });
+      res.status(500).send({
+        message:
+          'Error al encriptar contraseña. Contacte con el administrador del sistema.',
+      });
     } else {
-      if (!userUpdate) {
-        res.status(404).send({ message: "Usuario no encontrado." });
-      } else {
-        res.status(200).send({ message: "Usuario actualizado correctamente." });
-      }
+      userData.password = hash;
+      userData.email = req.body.email.toLowerCase();
+      User.findByIdAndUpdate(
+        { _id: params.id },
+        userData,
+        (err, userUpdate) => {
+          if (err) {
+            res.status(500).send({ message: 'Error del servidor.' });
+          } else {
+            if (!userUpdate) {
+              res.status(404).send({ message: 'Usuario no encontrado.' });
+            } else {
+              res
+                .status(200)
+                .send({ message: 'Usuario actualizado correctamente.' });
+            }
+          }
+        }
+      );
     }
   });
 }

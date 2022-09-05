@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Switch, List, Avatar, Button } from "antd";
+import React, { useEffect, useState } from 'react';
+import { Switch, List, Avatar, Button } from 'antd';
 import {
   EditOutlined,
   StopOutlined,
   DeleteOutlined,
   CheckCircleOutlined,
-} from "@ant-design/icons";
-import NoAvatar from "../../../../assets/img/png/no-avatar.png";
-import Modal from "../../../Modal";
-import EditUserForm from "../EditUserForm/EditUserForm";
-import { getAvatarApi } from "../../../../api/user";
+} from '@ant-design/icons';
+import NoAvatar from '../../../../assets/img/png/no-avatar.png';
+import Modal from '../../../Modal';
+import EditUserForm from '../EditUserForm/EditUserForm';
+import { getAvatarApi } from '../../../../api/user';
 
-import "./ListUsers.scss";
+import './ListUsers.scss';
 
 export default function ListUsers(props) {
-  const { usersActive, usersInactive } = props;
+  const { usersActive, usersInactive, setReloadUsers } = props;
   const [viewUsersActive, setViewUsersActive] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalInfo, setModalInfo] = useState({
-    title: "Mi modal",
-    children: "..",
+    title: 'Mi modal',
+    children: '..',
   });
   return (
     <div className="list-users">
@@ -29,7 +29,7 @@ export default function ListUsers(props) {
           onChange={() => setViewUsersActive(!viewUsersActive)}
         />
         <span>
-          {viewUsersActive ? "Usuarios activos" : "Usuarios inactivos"}
+          {viewUsersActive ? 'Usuarios activos' : 'Usuarios inactivos'}
         </span>
       </div>
       {viewUsersActive ? (
@@ -37,6 +37,7 @@ export default function ListUsers(props) {
           usersActive={usersActive}
           setModalVisible={setModalVisible}
           setModalInfo={setModalInfo}
+          setReloadUsers={setReloadUsers}
         />
       ) : (
         <UsersInactive usersInactive={usersInactive} />
@@ -53,15 +54,21 @@ export default function ListUsers(props) {
 }
 
 function UsersActive(props) {
-  const { usersActive, setModalVisible, setModalInfo } = props;
+  const { usersActive, setModalVisible, setModalInfo, setReloadUsers } = props;
 
   const editUser = (user) => {
     setModalVisible(true);
     setModalInfo({
-      title: `Editar ${user.name ? user.name : "usuario"} ${
-        user.lastName ? user.lastName : ""
+      title: `Editar ${user.name ? user.name : 'usuario'} ${
+        user.lastName ? user.lastName : ''
       }`,
-      children: <EditUserForm user={user} setModalVisible={setModalVisible} />,
+      children: (
+        <EditUserForm
+          user={user}
+          setModalVisible={setModalVisible}
+          setReloadUsers={setReloadUsers}
+        />
+      ),
     });
   };
 
@@ -94,10 +101,10 @@ function UserActive(props) {
         <Button type="primary" onClick={() => editUser(user)}>
           <EditOutlined />
         </Button>,
-        <Button type="danger" onClick={() => console.log("Desactivar usuario")}>
+        <Button type="danger" onClick={() => console.log('Desactivar usuario')}>
           <StopOutlined />
         </Button>,
-        <Button type="danger" onClick={() => console.log("Borrar usuario")}>
+        <Button type="danger" onClick={() => console.log('Borrar usuario')}>
           <DeleteOutlined />
         </Button>,
       ]}
@@ -105,8 +112,8 @@ function UserActive(props) {
       <List.Item.Meta
         avatar={<Avatar src={avatar ? avatar : NoAvatar} />}
         title={`
-                ${user.name ? user.name : "..."}
-                ${user.lastName ? user.lastName : "..."}
+                ${user.name ? user.name : '...'}
+                ${user.lastName ? user.lastName : '...'}
             `}
         description={user.email}
       />
@@ -143,12 +150,12 @@ function UserInactive(props) {
   return (
     <List.Item
       actions={[
-        <Button type="primary" onClick={() => console.log("Activar usuario")}>
+        <Button type="primary" onClick={() => console.log('Activar usuario')}>
           <CheckCircleOutlined />
         </Button>,
         <Button
           type="danger"
-          onClick={() => console.log("Borrar usuario")}
+          onClick={() => console.log('Borrar usuario')}
           description="Borrar usuario"
         >
           <DeleteOutlined />
@@ -158,8 +165,8 @@ function UserInactive(props) {
       <List.Item.Meta
         avatar={<Avatar src={avatar ? avatar : NoAvatar} />}
         title={`
-              ${user.name ? user.name : "..."}
-              ${user.lastName ? user.lastName : "..."}
+              ${user.name ? user.name : '...'}
+              ${user.lastName ? user.lastName : '...'}
           `}
         description={user.email}
       />
