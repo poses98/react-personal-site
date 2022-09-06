@@ -81,7 +81,7 @@ function UsersActive(props) {
     <List
       className="users-active"
       itemLayout="horizontal"
-      dataSource={usersActive
+      dataSource={usersActive}
       renderItem={(user) => (
         <UserActive
           user={user}
