@@ -191,35 +191,54 @@ function getAvatar(req, res) {
   });
 }
 
-function updateUser(req, res) {
+async function updateUser(req, res) {
   let userData = req.body;
+  userData.email = req.body.email.toLowerCase();
   const params = req.params;
-  bcrypt.hash(userData.password, null, null, function (err, hash) {
+  if (userData.password) {
+    await bcrypt.hash(userData.password, null, null, function (err, hash) {
+      if (err) {
+        res.status(500).send({
+          message:
+            'Error al encriptar contraseña. Contacte con el administrador del sistema.',
+        });
+      } else {
+        userData.password = hash;
+      }
+    });
+  }
+  User.findByIdAndUpdate({ _id: params.id }, userData, (err, userUpdate) => {
     if (err) {
-      res.status(500).send({
-        message:
-          'Error al encriptar contraseña. Contacte con el administrador del sistema.',
-      });
+      res.status(500).send({ message: 'Error del servidor.' });
     } else {
-      userData.password = hash;
-      userData.email = req.body.email.toLowerCase();
-      User.findByIdAndUpdate(
-        { _id: params.id },
-        userData,
-        (err, userUpdate) => {
-          if (err) {
-            res.status(500).send({ message: 'Error del servidor.' });
-          } else {
-            if (!userUpdate) {
-              res.status(404).send({ message: 'Usuario no encontrado.' });
-            } else {
-              res
-                .status(200)
-                .send({ message: 'Usuario actualizado correctamente.' });
-            }
-          }
+      if (!userUpdate) {
+        res.status(404).send({ message: 'Usuario no encontrado.' });
+      } else {
+        res.status(200).send({ message: 'Usuario actualizado correctamente.' });
+      }
+    }
+  });
+}
+
+function activateUser(req, res) {
+  const { id } = req.params;
+  const { active } = req.body;
+  console.log('Activate user...');
+  User.findByIdAndUpdate({ _id: id }, { active }, (err, userStored) => {
+    if (err) {
+      res
+        .status(500)
+        .send({ message: 'Error del servidor al activar el usuario.' });
+    } else {
+      if (!userStored) {
+        res.status(404).send({ message: 'No se ha encontrado el usuario.' });
+      } else {
+        if (active === true) {
+          res.status(200).send({ message: 'Usuario activado con éxito.' });
+        } else {
+          res.status(200).send({ message: 'Usuario desactivado con éxito.' });
         }
-      );
+      }
     }
   });
 }
@@ -232,4 +251,5 @@ module.exports = {
   uploadAvatar,
   getAvatar,
   updateUser,
+  activateUser,
 };

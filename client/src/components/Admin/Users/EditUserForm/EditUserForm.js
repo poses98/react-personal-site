@@ -8,7 +8,6 @@ import {
   Col,
   Button,
   notification,
-  Result,
 } from 'antd';
 import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import {
@@ -99,6 +98,8 @@ export default function EditUserForm(props) {
           message: result.message,
         });
         setReloadUsers(true);
+        delete userUpdate.password;
+        delete userUpdate.repeatPassword;
       });
     }
     setModalVisible(false);
@@ -229,6 +230,7 @@ function EditForm(props) {
               prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder="Contraseña"
               value={userData.password}
+              autoComplete="new-password"
             />
           </Form.Item>
         </Col>
@@ -239,6 +241,7 @@ function EditForm(props) {
               name="repeatPassword"
               prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder="Repita la contraseña"
+              autoComplete="new-password"
             />
           </Form.Item>
         </Col>

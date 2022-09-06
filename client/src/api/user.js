@@ -1,13 +1,13 @@
 //Conexion endpoints usuario
-import { BASE_PATH, API_VERSION } from "./config";
+import { BASE_PATH, API_VERSION } from './config';
 
 export async function signUpApi(data) {
   const url = `${BASE_PATH}/${API_VERSION}/sign-up`;
   const params = {
-    method: "POST", // or 'PUT'
+    method: 'POST', // or 'PUT'
     body: JSON.stringify(data), // data can be `string` or {object}!
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
   return fetch(url, params)
@@ -19,7 +19,7 @@ export async function signUpApi(data) {
       if (response.user) {
         return {
           ok: true,
-          message: "Usuario creado correctamente",
+          message: 'Usuario creado correctamente',
         };
       }
       return { ok: false, message: response.message };
@@ -29,10 +29,10 @@ export async function signUpApi(data) {
 export async function signInApi(data) {
   const url = `${BASE_PATH}/${API_VERSION}/sign-in`;
   const params = {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify(data),
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
 
@@ -49,9 +49,9 @@ export async function signInApi(data) {
 export async function getUsersApi(token) {
   const url = `${BASE_PATH}/${API_VERSION}/users`;
   const params = {
-    method: "GET",
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: token,
     },
   };
@@ -69,9 +69,9 @@ export async function getUsersApi(token) {
 export async function getUsersActiveApi(token, status) {
   const url = `${BASE_PATH}/${API_VERSION}/users-active?active=${status}`;
   const params = {
-    method: "GET",
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: token,
     },
   };
@@ -89,10 +89,10 @@ export async function getUsersActiveApi(token, status) {
 export async function uploadAvatarApi(token, avatar, userId) {
   const url = `${BASE_PATH}/${API_VERSION}/upload-avatar/${userId}`;
   const formData = new FormData();
-  formData.append("avatarName", avatar, avatar.name);
+  formData.append('avatarName', avatar, avatar.name);
 
   const params = {
-    method: "PUT",
+    method: 'PUT',
     body: formData,
     headers: {
       Authorization: token,
@@ -126,12 +126,35 @@ export async function updateUserApi(token, user, userId) {
   const url = `${BASE_PATH}/${API_VERSION}/update-user/${userId}`;
 
   const params = {
-    method: "PUT",
+    method: 'PUT',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: token,
     },
     body: JSON.stringify(user),
+  };
+  return fetch(url, params)
+    .then((response) => {
+      return response.json();
+    })
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      return err.message;
+    });
+}
+
+export async function activateUserApi(token, status, userId) {
+  const url = `${BASE_PATH}/${API_VERSION}/activate-user/${userId}`;
+
+  const params = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+    body: JSON.stringify({ active: status }),
   };
   return fetch(url, params)
     .then((response) => {
