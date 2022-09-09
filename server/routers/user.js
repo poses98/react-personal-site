@@ -10,6 +10,7 @@ const api = express.Router();
 //POST endpoints
 api.post('/sign-up', UserController.signUp);
 api.post('/sign-in', UserController.signIn);
+api.post('/sign-up-admin', [md_auth.ensureAuth], UserController.signUpAdmin);
 
 //GET endpoints
 api.get('/users', [md_auth.ensureAuth], UserController.getUsers);
@@ -29,4 +30,8 @@ api.put(
   [md_auth.ensureAuth],
   UserController.activateUser
 );
+
+//DELETE endpoints
+api.delete('/delete-user/:id', [md_auth.ensureAuth], UserController.deleteUser);
+
 module.exports = api;

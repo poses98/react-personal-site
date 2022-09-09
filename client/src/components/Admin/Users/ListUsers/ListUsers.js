@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, List, Avatar, Button, notification } from 'antd';
+import { Switch, List, Avatar, Button, notification, Popconfirm } from 'antd';
 import {
   EditOutlined,
   StopOutlined,
   DeleteOutlined,
   CheckCircleOutlined,
+  QuestionCircleOutlined,
 } from '@ant-design/icons';
 import NoAvatar from '../../../../assets/img/png/no-avatar.png';
 import Modal from '../../../Modal';
 import EditUserForm from '../EditUserForm/EditUserForm';
-import { getAvatarApi, activateUserApi } from '../../../../api/user';
+import {
+  getAvatarApi,
+  activateUserApi,
+  deleteUserApi,
+} from '../../../../api/user';
 import { getAccessTokenApi } from '../../../../api/auth';
 
 import './ListUsers.scss';
@@ -115,6 +120,18 @@ function UserActive(props) {
       .catch((err) => {});
   };
 
+  const deleteUser = () => {
+    const accessToken = getAccessTokenApi();
+
+    deleteUserApi(accessToken, user._id)
+      .then((response) => {
+        setReloadUsers(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <List.Item
       actions={[
@@ -124,9 +141,17 @@ function UserActive(props) {
         <Button type="danger" onClick={() => deactivateUser()}>
           <StopOutlined />
         </Button>,
-        <Button type="danger" onClick={() => console.log('Borrar usuario')}>
-          <DeleteOutlined />
-        </Button>,
+        <Popconfirm
+          title="¿Eliminar usuario?"
+          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+          onConfirm={() => deleteUser()}
+          onOpenChange={() => console.log('open change')}
+          okButtonProps={{ color: 'red' }}
+        >
+          <Button type="danger">
+            <DeleteOutlined />
+          </Button>
+        </Popconfirm>,
       ]}
     >
       <List.Item.Meta
@@ -179,19 +204,35 @@ function UserInactive(props) {
       .catch((err) => {});
   };
 
+  const deleteUser = () => {
+    const accessToken = getAccessTokenApi();
+
+    deleteUserApi(accessToken, user._id)
+      .then((response) => {
+        setReloadUsers(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <List.Item
       actions={[
         <Button type="primary" onClick={() => activateUser()}>
           <CheckCircleOutlined />
         </Button>,
-        <Button
-          type="danger"
-          onClick={() => console.log('Borrar usuario')}
-          description="Borrar usuario"
+        <Popconfirm
+          title="¿Eliminar usuario?"
+          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+          onConfirm={() => deleteUser()}
+          onOpenChange={() => console.log('open change')}
+          okButtonProps={{ color: 'red' }}
         >
-          <DeleteOutlined />
-        </Button>,
+          <Button type="danger">
+            <DeleteOutlined />
+          </Button>
+        </Popconfirm>,
       ]}
     >
       <List.Item.Meta
