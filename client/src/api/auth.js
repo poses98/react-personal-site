@@ -3,9 +3,9 @@
  * @description This class is intended to manage actions regarding tokens in client
  */
 
-import { API_VERSION, BASE_PATH } from "./config";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../utils/constants";
-import jwtDecode from "jwt-decode";
+import { API_VERSION, BASE_PATH } from './config';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../utils/constants';
+import jwtDecode from 'jwt-decode';
 
 /**
  * Returns access token if it is valid
@@ -14,7 +14,7 @@ import jwtDecode from "jwt-decode";
 export function getAccessTokenApi() {
   const accessToken = localStorage.getItem(ACCESS_TOKEN);
 
-  if (!accessToken || accessToken === "null") {
+  if (!accessToken || accessToken === 'null') {
     return null;
   }
 
@@ -27,7 +27,7 @@ export function getAccessTokenApi() {
 export function getRefreshTokenApi() {
   const refreshToken = localStorage.getItem(REFRESH_TOKEN);
 
-  if (refreshToken === "null" || !refreshToken) {
+  if (refreshToken === 'null' || !refreshToken) {
     return null;
   }
 
@@ -43,10 +43,10 @@ export function refreshAccessToken(refreshToken) {
     refreshToken: refreshToken,
   };
   const params = {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify(bodyObj),
     header: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
 
@@ -84,7 +84,7 @@ export function logout() {
 function isTokenExpired(token) {
   const seconds = 60;
   const metaToken = jwtDecode(token);
-  const { exp } = metaToken;
+  const { expires } = metaToken;
   const now = (Date.now() + seconds) / 1000;
-  return now > exp;
+  return now > expires;
 }

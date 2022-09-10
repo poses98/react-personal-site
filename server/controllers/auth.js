@@ -3,6 +3,7 @@ const moment = require('moment');
 const User = require('../models/user');
 
 function hasTokenExpired(token) {
+  console.log(token);
   const { expires } = token;
   const currentDate = moment().unix();
 

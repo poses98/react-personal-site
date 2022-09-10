@@ -190,3 +190,25 @@ export async function deleteUserApi(token, userId) {
       return err.message;
     });
 }
+
+export async function signUpAdminApi(token, data) {
+  const url = `${BASE_PATH}/${API_VERSION}/sign-up-admin`;
+  const params = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+    body: JSON.stringify(data),
+  };
+  return fetch(url, params)
+    .then((response) => {
+      return response.json();
+    })
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      return err.message;
+    });
+}

@@ -10,6 +10,7 @@ import {
 import NoAvatar from '../../../../assets/img/png/no-avatar.png';
 import Modal from '../../../Modal';
 import EditUserForm from '../EditUserForm/EditUserForm';
+import AddUserForm from '../AddUserForm/AddUserForm';
 import {
   getAvatarApi,
   activateUserApi,
@@ -27,16 +28,35 @@ export default function ListUsers(props) {
     title: 'Mi modal',
     children: '..',
   });
+
+  const addUserModal = () => {
+    setModalVisible(true);
+    setModalInfo({
+      title: 'Crear nuevo usuario',
+      children: (
+        <AddUserForm
+          setModalVisible={setModalVisible}
+          setReloadUsers={setReloadUsers}
+        />
+      ),
+    });
+  };
+
   return (
     <div className="list-users">
-      <div className="list-users__switch">
-        <Switch
-          defaultChecked
-          onChange={() => setViewUsersActive(!viewUsersActive)}
-        />
-        <span>
-          {viewUsersActive ? 'Usuarios activos' : 'Usuarios inactivos'}
-        </span>
+      <div className="list-users__header">
+        <div className="list-users__header-switch">
+          <Switch
+            defaultChecked
+            onChange={() => setViewUsersActive(!viewUsersActive)}
+          />
+          <span>
+            {viewUsersActive ? 'Usuarios activos' : 'Usuarios inactivos'}
+          </span>
+        </div>
+        <Button type="primary" onClick={addUserModal}>
+          Nuevo Usuario
+        </Button>
       </div>
 
       {viewUsersActive ? (

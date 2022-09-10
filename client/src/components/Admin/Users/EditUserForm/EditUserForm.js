@@ -211,7 +211,9 @@ function EditForm(props) {
             <Select
               name="role"
               placeholder="Selecciona el rol de usuario"
-              onChange={() => setUserData({ ...userData })}
+              onChange={(e) =>
+                setUserData({ ...userData, role: e.target.value })
+              }
               value={userData.role}
             >
               <Option value="admin">Administrador</Option>
