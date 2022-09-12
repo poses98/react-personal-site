@@ -269,19 +269,19 @@ function signUpAdmin(req, res) {
   user.active = true;
 
   if (!password) {
-    res.status(500).send({ message: 'La contraseña es obligatoria.' });
+    res.status(500).send({ message: 'La contraseña es obligatoria' });
   } else {
     bcrypt.hash(password, null, null, (err, hash) => {
       if (err) {
-        res.status(500).send({ message: 'Error al encriptar la contraseña.' });
+        res.status(500).send({ message: 'Error al encriptar la contraseña' });
       } else {
         user.password = hash;
         user.save((err, storedUser) => {
           if (err) {
-            res.status(500).send({ message: 'El usuario ya existe..' });
+            res.status(500).send({ message: 'El usuario ya existe' });
           } else {
             if (!storedUser) {
-              res.status(404).send({ message: 'Error al crear usuario..' });
+              res.status(404).send({ message: 'Error al crear usuario' });
             } else {
               res.status(200).send({ message: 'Usuario creado correctamente' });
             }
