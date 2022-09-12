@@ -6,7 +6,7 @@ const SECRET_KEY =
   'e9c9cb025d6ac1032012e2970fd5ab8750f51b2210ff0c395c65a1898a618607f5c3f744b06093e63a71aa55f53002be08e27fec2890342b9f2eb95e5fd6dd6b';
 
 /**
- * Function which creates an access token with 3h of validity
+ * Function which creates an access token with 10 mins expiration
  * @param {*} user
  */
 exports.createAccessToken = function (user) {
@@ -17,7 +17,7 @@ exports.createAccessToken = function (user) {
     email: user.email,
     role: user.role,
     createToken: moment().unix(),
-    expires: moment().add(3, 'hours').unix(),
+    expires: moment().add(10, 'minutes').unix(),
   };
 
   return jwt.encode(payload, SECRET_KEY);
@@ -26,7 +26,7 @@ exports.createAccessToken = function (user) {
 exports.createRefreshToken = function (user) {
   const payload = {
     id: user.id,
-    expires: moment().add(30, 'days').unix(),
+    expires: moment().add(3, 'hours').unix(),
   };
 
   return jwt.encode(payload, SECRET_KEY);

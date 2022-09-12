@@ -6,7 +6,7 @@ function hasTokenExpired(token) {
   console.log(token);
   const { expires } = token;
   const currentDate = moment().unix();
-
+  console.log(expires);
   if (currentDate > expires) {
     return true;
   }
