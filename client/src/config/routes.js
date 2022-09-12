@@ -6,9 +6,8 @@ import LayoutError from '../layouts/LayoutError';
 import AdminHome from '../pages/Admin';
 import AdminSignIn from '../pages/Admin/SignIn/SignIn';
 import AdminUsers from '../pages/Admin/Users';
+import AdminMenuWeb from '../pages/Admin/MenuWeb';
 
-
-import WebMenu from '../pages/Admin/WebMenu';
 // Client pages
 import Home from '../pages/Home';
 import Contact from '../pages/Contact';
@@ -28,15 +27,15 @@ const routesAdmin = [
     layout: LayoutBasic,
   },
   {
-    path: '/admin/menu-web',
-    component: WebMenu,
+    path: '/admin/menu',
+    component: AdminMenuWeb,
     layout: LayoutAdmin,
   },
   {
     path: '/admin/users',
     component: AdminUsers,
-    layout: LayoutAdmin
-  }
+    layout: LayoutAdmin,
+  },
 ];
 
 const routesClient = [

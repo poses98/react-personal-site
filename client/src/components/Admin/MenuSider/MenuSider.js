@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
-import { UserOutlined, HomeOutlined } from '@ant-design/icons';
+import { UserOutlined, HomeOutlined, MenuOutlined } from '@ant-design/icons';
 import './MenuSider.scss';
 
 export default function MenuSider(props) {
   const { menuCollapsed, setmenuCollapsed } = props;
   const { Sider } = Layout;
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   return (
     <Sider
       className="admin-sider"
@@ -28,8 +28,13 @@ export default function MenuSider(props) {
             <span className="nav-text">Usuarios</span>
           </Link>
         </Menu.Item>
+        <Menu.Item key="/admin/menu">
+          <Link to="/admin/menu" onClick={() => setmenuCollapsed(true)}>
+            <MenuOutlined />
+            <span className="nav-text">Menú Web</span>
+          </Link>
+        </Menu.Item>
       </Menu>
     </Sider>
   );
 }
-
