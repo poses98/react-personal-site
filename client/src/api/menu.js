@@ -12,7 +12,7 @@ export async function getMenusApi(token) {
 
   return fetch(url, params)
     .then((response) => {
-      return response.json;
+      return response.json();
     })
     .then((result) => {
       return result;
