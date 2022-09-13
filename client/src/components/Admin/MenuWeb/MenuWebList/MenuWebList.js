@@ -38,11 +38,13 @@ export default function MenuWebList(props) {
 
   const activateMenu = (menu, status) => {
     const accessToken = getAccessTokenApi();
-    activateMenuApi(accessToken, menu._id, status).then((response) => {
-      notification['success']({
-        message: response,
+    activateMenuApi(accessToken, menu._id, status)
+      .then((response) => {
+        console.log(response.message);
+      })
+      .catch((err) => {
+        console.log(err.message);
       });
-    });
   };
 
   const onSort = (sortedList, dropEvent) => {
