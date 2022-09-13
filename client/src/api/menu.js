@@ -92,3 +92,26 @@ export function addMenuApi(token, data) {
       return err;
     });
 }
+
+export function deleteMenuApi(token, menuId) {
+  const url = `${BASE_PATH}/${API_VERSION}/delete-menu/${menuId}`;
+
+  const params = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  };
+
+  return fetch(url, params)
+    .then((response) => {
+      return response.json();
+    })
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      return err;
+    });
+}

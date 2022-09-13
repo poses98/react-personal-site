@@ -6,11 +6,20 @@ import {
   Modal as ModalAntd,
   notification,
   Result,
+  Popconfirm,
 } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons';
 import Modal from '../../../Modal';
 import DragSortableList from 'react-drag-sortable';
-import { updateMenuApi, activateMenuApi } from '../../../../api/menu';
+import {
+  updateMenuApi,
+  activateMenuApi,
+  deleteMenuApi,
+} from '../../../../api/menu';
 import { getAccessTokenApi } from '../../../../api/auth';
 
 import './MenuWebList.scss';
@@ -37,6 +46,7 @@ export default function MenuWebList(props) {
             item={item}
             activateMenu={activateMenu}
             editMenuWebModal={editMenuWebModal}
+            deleteMenuWeb={deleteMenuWeb}
           />
         ),
       });
@@ -88,6 +98,18 @@ export default function MenuWebList(props) {
     );
   };
 
+  const deleteMenuWeb = (menu) => {
+    const accessToken = getAccessTokenApi();
+    deleteMenuApi(accessToken, menu._id)
+      .then((response) => {
+        notification['success']({ message: response.message });
+        setReloadMenuWeb(true);
+      })
+      .catch((err) => {
+        notification['error']({ message: err.message });
+      });
+  };
+
   return (
     <div className="menu-web-list">
       <div className="menu-web-list__header">
@@ -111,7 +133,7 @@ export default function MenuWebList(props) {
 }
 
 function MenuItem(props) {
-  const { item, activateMenu, editMenuWebModal } = props;
+  const { item, activateMenu, editMenuWebModal, deleteMenuWeb } = props;
 
   return (
     <List.Item
@@ -123,9 +145,15 @@ function MenuItem(props) {
         <Button type="primary" onClick={() => editMenuWebModal(item)}>
           <EditOutlined />
         </Button>,
-        <Button type="danger">
-          <DeleteOutlined />
-        </Button>,
+        <Popconfirm
+          title="¿Eliminar menú?"
+          icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+          onConfirm={() => deleteMenuWeb(item)}
+        >
+          <Button type="danger">
+            <DeleteOutlined />
+          </Button>
+        </Popconfirm>,
       ]}
     >
       <List.Item.Meta title={item.title} description={item.url} />
