@@ -19,10 +19,9 @@ export default function LayoutAdmin(props) {
 
   useEffect(() => {
     if (!getAccessTokenApi()) {
-      console.log('Not access token found. Redirecting to login');
       navigate('/admin/login');
     }
-  }, [navigate]);
+  }, [isLoading, user, navigate]);
 
   useEffect(() => {
     if (!isLoading) {

@@ -15,6 +15,7 @@ import { getAccessTokenApi } from '../../../../api/auth';
 
 import './MenuWebList.scss';
 import AddMenuWebForm from '../AddMenuWebForm';
+import EditMenuWebForm from '../EditMenuWebForm/EditMenuWebForm';
 
 const { confirm } = ModalAntd;
 
@@ -31,10 +32,17 @@ export default function MenuWebList(props) {
 
     menus.forEach((item) => {
       listItemsArray.push({
-        content: <MenuItem item={item} activateMenu={activateMenu} />,
+        content: (
+          <MenuItem
+            item={item}
+            activateMenu={activateMenu}
+            editMenuWebModal={editMenuWebModal}
+          />
+        ),
       });
     });
     setListItems(listItemsArray);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menus]);
 
   const activateMenu = (menu, status) => {
@@ -61,7 +69,23 @@ export default function MenuWebList(props) {
   const addMenuWebModal = () => {
     setIsVisibleModal(true);
     setModalTitle('Crear menú');
-    setModalContent(<AddMenuWebForm />);
+    setModalContent(
+      <AddMenuWebForm
+        setReloadMenuWeb={setReloadMenuWeb}
+        setIsVisibleModal={setIsVisibleModal}
+      />
+    );
+  };
+  const editMenuWebModal = (menu) => {
+    setIsVisibleModal(true);
+    setModalTitle(`Editando ${menu.title}`);
+    setModalContent(
+      <EditMenuWebForm
+        setIsVisibleModal={setIsVisibleModal}
+        setReloadMenuWeb={setReloadMenuWeb}
+        menu={menu}
+      />
+    );
   };
 
   return (
@@ -87,7 +111,7 @@ export default function MenuWebList(props) {
 }
 
 function MenuItem(props) {
-  const { item, activateMenu } = props;
+  const { item, activateMenu, editMenuWebModal } = props;
 
   return (
     <List.Item
@@ -96,7 +120,7 @@ function MenuItem(props) {
           defaultChecked={item.active}
           onChange={(e) => activateMenu(item, e)}
         />,
-        <Button type="primary" onClick={() => console.log('sda')}>
+        <Button type="primary" onClick={() => editMenuWebModal(item)}>
           <EditOutlined />
         </Button>,
         <Button type="danger">

@@ -1,21 +1,16 @@
-.edit-user-form{
-    .upload-avatar{
-        display: table;
-        margin: 0 auto;
-        border: 2px dashed #9a9a9a;
-        border-radius: 100px;
-        padding: 10px;
-        margin-bottom: 20px;
+.edit-user-form {
+  .upload-avatar {
+    display: table;
+    margin: 0 auto;
+    border: 2px dashed #9a9a9a;
+    border-radius: 100px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  .form-edit {
+    .ant-form-item {
+      margin-top: 5px;
+      margin-bottom: 5px;
     }
-    .form-edit{
-
-        .ant-form-item{
-            margin-top: 5px;
-            margin-bottom: 5px;
-
-            
-        }
-
-        
-    }
+  }
 }
