@@ -1,3 +1,4 @@
+const menu = require('../models/menu');
 const Menu = require('../models/menu');
 
 function addMenu(req, res) {
@@ -34,7 +35,25 @@ function getMenus(req, res) {
     });
 }
 
+function updateMenu(req, res) {
+  let menuData = req.body;
+  const params = req.params;
+
+  menu.findByIdAndUpdate(params.id, menuData, (err, menuUpdated) => {
+    if (err) {
+      res.status(500).send({ message: 'Error del servidor' });
+    } else {
+      if (!menuUpdated) {
+        res.status(404).send({ message: 'No se ha encontrado el menú' });
+      } else {
+        res.status(200).send({ message: 'Menú actualizado correctamente' });
+      }
+    }
+  });
+}
+
 module.exports = {
   addMenu,
   getMenus,
+  updateMenu,
 };
