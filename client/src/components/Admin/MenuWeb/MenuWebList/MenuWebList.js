@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, List, Button, Modal as ModalAntd, notification } from 'antd';
+import {
+  Switch,
+  List,
+  Button,
+  Modal as ModalAntd,
+  notification,
+  Result,
+} from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Modal from '../../../Modal';
 import DragSortableList from 'react-drag-sortable';
-import { updateMenuApi } from '../../../../api/menu';
+import { updateMenuApi, activateMenuApi } from '../../../../api/menu';
 import { getAccessTokenApi } from '../../../../api/auth';
 
 import './MenuWebList.scss';
@@ -23,11 +30,20 @@ export default function MenuWebList(props) {
 
     menus.forEach((item) => {
       listItemsArray.push({
-        content: <MenuItem item={item} />,
+        content: <MenuItem item={item} activateMenu={activateMenu} />,
       });
     });
     setListItems(listItemsArray);
   }, [menus]);
+
+  const activateMenu = (menu, status) => {
+    const accessToken = getAccessTokenApi();
+    activateMenuApi(accessToken, menu._id, status).then((response) => {
+      notification['success']({
+        message: response,
+      });
+    });
+  };
 
   const onSort = (sortedList, dropEvent) => {
     const accessToken = getAccessTokenApi();
@@ -52,12 +68,15 @@ export default function MenuWebList(props) {
 }
 
 function MenuItem(props) {
-  const { item } = props;
+  const { item, activateMenu } = props;
 
   return (
     <List.Item
       actions={[
-        <Switch defaultChecked={item.active} />,
+        <Switch
+          defaultChecked={item.active}
+          onChange={(e) => activateMenu(item, e)}
+        />,
         <Button type="primary" onClick={() => console.log('sda')}>
           <EditOutlined />
         </Button>,
