@@ -17,5 +17,6 @@ api.put(
   MenuController.activateMenu
 );
 //DELETE endpoints
+api.delete('/delete-menu/:id', [md_auth.ensureAuth], MenuController.deleteMenu);
 
 module.exports = api;
