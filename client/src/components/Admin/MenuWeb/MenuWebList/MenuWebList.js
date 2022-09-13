@@ -14,6 +14,7 @@ import { updateMenuApi, activateMenuApi } from '../../../../api/menu';
 import { getAccessTokenApi } from '../../../../api/auth';
 
 import './MenuWebList.scss';
+import AddMenuWebForm from '../AddMenuWebForm';
 
 const { confirm } = ModalAntd;
 
@@ -57,14 +58,30 @@ export default function MenuWebList(props) {
     });
   };
 
+  const addMenuWebModal = () => {
+    setIsVisibleModal(true);
+    setModalTitle('Crear menú');
+    setModalContent(<AddMenuWebForm />);
+  };
+
   return (
     <div className="menu-web-list">
       <div className="menu-web-list__header">
-        <Button type="primary">Crear menú</Button>
+        <Button type="primary" onClick={addMenuWebModal}>
+          Crear menú
+        </Button>
       </div>
       <div className="menu-web-list__items">
         <DragSortableList items={listItems} onSort={onSort} type="vertical" />
       </div>
+
+      <Modal
+        title={modalTitle}
+        isVisible={isVisibleModal}
+        setIsVisible={setIsVisibleModal}
+      >
+        {modalContent}
+      </Modal>
     </div>
   );
 }
