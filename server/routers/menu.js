@@ -9,6 +9,7 @@ const api = express.Router();
 api.post('/add-menu', [md_auth.ensureAuth], MenuController.addMenu);
 //GET endpoints
 api.get('/get-menus', [md_auth.ensureAuth], MenuController.getMenus);
+api.get('/get-active-menus', MenuController.getMenusActive);
 //PUT endpoints
 api.put('/update-menu/:id', [md_auth.ensureAuth], MenuController.updateMenu);
 api.put(

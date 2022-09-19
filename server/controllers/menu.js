@@ -35,6 +35,23 @@ function getMenus(req, res) {
     });
 }
 
+function getMenusActive(req, res) {
+  Menu.find({ active: true })
+    .sort({ order: 'asc' })
+    .select(['-_id', '-active'])
+    .then((menus, err) => {
+      if (err) {
+        res.status(500).send({ message: 'Error del servidor' });
+      } else {
+        if (!menus) {
+          res.status(404).send({ message: 'No se han encontrado los menús' });
+        } else {
+          res.status(200).send({ menus });
+        }
+      }
+    });
+}
+
 function updateMenu(req, res) {
   let menuData = req.body;
   const params = req.params;
@@ -86,6 +103,7 @@ function deleteMenu(req, res) {
 module.exports = {
   addMenu,
   getMenus,
+  getMenusActive,
   updateMenu,
   activateMenu,
   deleteMenu,

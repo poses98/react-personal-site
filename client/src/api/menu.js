@@ -22,6 +22,27 @@ export async function getMenusApi(token) {
     });
 }
 
+export function getActiveMenusApi() {
+  const url = `${BASE_PATH}/${API_VERSION}/get-active-menus`;
+  const params = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  fetch(url, params)
+    .then((response) => {
+      return response.json();
+    })
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => {
+      return err;
+    });
+}
+
 export function updateMenuApi(token, menuId, data) {
   const url = `${BASE_PATH}/${API_VERSION}/update-menu/${menuId}`;
   const params = {
