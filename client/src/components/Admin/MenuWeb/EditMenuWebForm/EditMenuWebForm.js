@@ -70,7 +70,7 @@ function EditForm(props) {
       <Form.Item>
         <Input
           prefix={<LinkOutlined style={{ color: 'rgba(0, 0, 0, 0.25)' }} />}
-          type="url"
+          type="text"
           name="url"
           value={menuData.url}
         />

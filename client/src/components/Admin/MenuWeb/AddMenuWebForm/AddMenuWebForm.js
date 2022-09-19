@@ -77,7 +77,7 @@ function AddForm(props) {
       <Form.Item>
         <Input
           name="url"
-          type="url"
+          type="text"
           addonBefore={selectBefore}
           placeholder="URL"
           value={menuWebData.url}

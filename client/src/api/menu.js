@@ -22,7 +22,7 @@ export async function getMenusApi(token) {
     });
 }
 
-export function getActiveMenusApi() {
+export async function getActiveMenusApi() {
   const url = `${BASE_PATH}/${API_VERSION}/get-active-menus`;
   const params = {
     method: 'GET',
@@ -31,7 +31,7 @@ export function getActiveMenusApi() {
     },
   };
 
-  fetch(url, params)
+  return fetch(url, params)
     .then((response) => {
       return response.json();
     })
@@ -39,7 +39,7 @@ export function getActiveMenusApi() {
       return result;
     })
     .catch((err) => {
-      return err;
+      return err.message;
     });
 }
 
