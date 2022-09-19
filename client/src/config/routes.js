@@ -2,6 +2,7 @@
 import LayoutAdmin from '../layouts/LayoutAdmin';
 import LayoutBasic from '../layouts/LayoutBasic';
 import LayoutError from '../layouts/LayoutError';
+import LayoutSignIn from '../layouts/LayoutSignIn';
 // Admin pages
 import AdminHome from '../pages/Admin';
 import AdminSignIn from '../pages/Admin/SignIn/SignIn';
@@ -24,7 +25,7 @@ const routesAdmin = [
   {
     path: '/admin/login',
     component: AdminSignIn,
-    layout: LayoutBasic,
+    layout: LayoutSignIn,
   },
   {
     path: '/admin/menu',

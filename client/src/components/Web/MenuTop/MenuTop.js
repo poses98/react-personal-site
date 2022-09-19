@@ -7,7 +7,9 @@ import './MenuTop.scss';
 export default function MenuTop(props) {
   return (
     <Menu className="menu-top" mode="horizontal">
-      <Menu.Item className="menu-top__logo">Logo..</Menu.Item>
+      <Menu.Item className="menu-top__logo">
+        <Logo />
+      </Menu.Item>
       <Menu.Item className="menu-top__item">
         <Link to={'/'}>Home</Link>
       </Menu.Item>
@@ -16,4 +18,8 @@ export default function MenuTop(props) {
       </Menu.Item>
     </Menu>
   );
+}
+
+function Logo() {
+  return <div className="logo">P</div>;
 }

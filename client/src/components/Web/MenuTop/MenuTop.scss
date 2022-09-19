@@ -1,6 +1,39 @@
 @import '../../../scss/index.scss';
 
-menu-top {
-  position: sticky; //always on top
+.menu-top {
+  position: sticky;
+  top: 0;
   background-color: $background-dark-web;
+  border: 0;
+  display: flex;
+  align-items: center;
+  li {
+    border: 0 !important;
+
+    a {
+      color: #fff !important;
+      font-weight: bold;
+
+      &:hover {
+        color: $primary-color !important;
+      }
+    }
+  }
+}
+
+.logo {
+  background-color: #ffc61a;
+  width: 50px;
+  height: 50px;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  font-size: x-large;
+  transition: color 0.5s;
+
+  &:hover {
+    color: $background-dark-web !important;
+    border: 0 !important;
+    cursor: pointer;
+  }
 }
